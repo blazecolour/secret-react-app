@@ -1,0 +1,16 @@
+.film-card {
+  height: 400px;
+  width: 800px;
+  display: flex;
+  box-shadow: 0 2px 5px 1px rgba(0,0,0,0.2);
+  margin: 100px auto 0;
+}
+
+.info-card {
+  border-width: 1px;
+  border-color: green;
+  padding: 12px;
+  background-color: rgb(252, 237, 210);
+  border-radius: 3px;
+  text-align: center;
+}
