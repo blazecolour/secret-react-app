@@ -1,5 +1,6 @@
 import React from 'react';
 import getOmdbApi from '../../constants/omdbApi';
+import uniqId from '../../utils/uniqId';
 import './FilmCard.css';
 
 export default class FilmCard extends React.Component {
@@ -9,7 +10,7 @@ export default class FilmCard extends React.Component {
     this.state = {
       Poster: '',
       Director: '',
-      Actors: '',
+      Actors: [],
       Year: '',
       Ratings: '',
       Description: '',
@@ -34,7 +35,9 @@ export default class FilmCard extends React.Component {
   getActors = () => {
     fetch(this.api)
       .then(response => response.json())
-      .then(result => this.setState({ Actors: result.Actors }));
+      .then(result =>
+        this.setState({ Actors: result.Actors.split(',').slice(0, 3) })
+      );
   };
 
   getYear = () => {
@@ -82,7 +85,12 @@ export default class FilmCard extends React.Component {
         <div className="info-card">
           <h2>{Title}</h2>
           <p>Director: {Director}</p>
-          <p>Actors: {Actors}</p>
+          <p>
+            Actors:{' '}
+            {Actors.map(actor => (
+              <div key={uniqId()}>{actor}</div>
+            ))}
+          </p>
           <p>Year: {Year}</p>
           {/* <p>Rating: {Ratings}</p> */}
           <p className="description-film">Description: {Description}</p>

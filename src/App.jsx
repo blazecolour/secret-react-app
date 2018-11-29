@@ -15,10 +15,9 @@ class App extends Component {
       error: null
     };
 
-    this.NytimesApi = getNytimesApi(100);
+    this.NytimesApi = getNytimesApi(120);
   }
   getFilmTitles = () => {
-    // const { films } = this.state;
     fetch(this.NytimesApi)
       .then(response => response.json())
 
@@ -39,7 +38,7 @@ class App extends Component {
   render() {
     const { films, isFetching } = this.state;
 
-    if (isFetching) return <Loading width='200px' height='200px' />;
+    if (isFetching) return <Loading width='10px' height='10px' />;
 
     return (
       <div className="App">
