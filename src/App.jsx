@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FilmCard from './components/FilmCard/FilmCard';
+import Loading from './components/Loading/Loading';
 import getNytimesApi from './constants/nytimesApi';
-import getOmdbApi from './constants/omdbApi';
 import uniqId from './utils/uniqId';
 import './App.css';
 
@@ -11,22 +11,14 @@ class App extends Component {
 
     this.state = {
       films: [],
-      Title: [],
-      Poster: [],
-      Director: [],
-      Actors: [],
-      Year: [],
-      Ratings: [],
-      Description: [],
       isFetching: true,
       error: null
     };
 
-    // this.api = getOmdbApi(this.props);
-    this.NytimesApi = getNytimesApi(60);
+    this.NytimesApi = getNytimesApi(100);
   }
   getFilmTitles = () => {
-    const { films } = this.state;
+    // const { films } = this.state;
     fetch(this.NytimesApi)
       .then(response => response.json())
 
@@ -36,24 +28,19 @@ class App extends Component {
         response.results.forEach(element => {
           filmNames.push(element.display_title);
         });
-        this.setState({ films: filmNames });
-        console.log(filmNames);
+        this.setState({ films: filmNames, isFetching: false });
       });
   };
 
   componentDidMount() {
     this.getFilmTitles();
-    // this.getTitle();
-    // this.getPoster();
-    // this.getDirector();
-    // this.getActors();
-    // this.getYear();
-    // this.getRatings();
-    // this.getDescription();
   }
 
   render() {
-    const { films } = this.state;
+    const { films, isFetching } = this.state;
+
+    if (isFetching) return setTimeout(() => <Loading />, 5000);
+
     return (
       <div className="App">
         <ul>

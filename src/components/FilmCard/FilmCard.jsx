@@ -7,83 +7,55 @@ export default class FilmCard extends React.Component {
     super(props);
 
     this.state = {
-      Title: '',
       Poster: '',
       Director: '',
       Actors: '',
       Year: '',
       Ratings: '',
       Description: '',
-      isFetching: true,
       error: null
     };
 
     this.api = getOmdbApi(this.props.Title);
   }
 
-  getTitle = () => {
-    const { Title } = this.state;
-    fetch(this.api)
-      .then(response => response.json())
-      .then(result =>
-        this.setState({ Title: result.Title, isFetching: false })
-      );
-  };
-
   getPoster = () => {
-    const { Poster } = this.state;
     fetch(this.api)
       .then(response => response.json())
-      .then(result =>
-        this.setState({ Poster: result.Poster, isFetching: false })
-      );
+      .then(result => this.setState({ Poster: result.Poster }));
   };
 
   getDirector = () => {
-    const { Director } = this.state;
     fetch(this.api)
       .then(response => response.json())
-      .then(result =>
-        this.setState({ Director: result.Director, isFetching: false })
-      );
+      .then(result => this.setState({ Director: result.Director }));
   };
 
   getActors = () => {
-    const { Actors } = this.state;
     fetch(this.api)
       .then(response => response.json())
-      .then(result =>
-        this.setState({ Actors: result.Actors, isFetching: false })
-      );
+      .then(result => this.setState({ Actors: result.Actors }));
   };
 
   getYear = () => {
-    const { Year } = this.state;
     fetch(this.api)
       .then(response => response.json())
-      .then(result => this.setState({ Year: result.Year, isFetching: false }));
+      .then(result => this.setState({ Year: result.Year }));
   };
 
-  // getRatings = () => {
-  //   const { Ratings } = this.state;
-  //   fetch(this.api)
-  //     .then(response => response.json())
-  //     .then(result =>
-  //       this.setState({ Ratings: result.Ratings[0].Value, isFetching: false })
-  //     );
-  // };
-
-  getDescription = () => {
-    const { Description } = this.state;
+  getRatings = () => {
     fetch(this.api)
       .then(response => response.json())
-      .then(result =>
-        this.setState({ Description: result.Plot, isFetching: false })
-      );
+      .then(result => this.setState({ Ratings: result.Ratings[0].Value }));
+  };
+
+  getDescription = () => {
+    fetch(this.api)
+      .then(response => response.json())
+      .then(result => this.setState({ Description: result.Plot }));
   };
 
   componentDidMount() {
-    this.getTitle();
     this.getPoster();
     this.getDirector();
     this.getActors();
@@ -93,19 +65,17 @@ export default class FilmCard extends React.Component {
   }
 
   render() {
-    const {
-      Title
-    } = this.props;
+    const { Title } = this.props;
+
     const {
       Poster,
       Director,
       Actors,
       Year,
-      Description,
+      Description
       // Ratings,
-      isFetching
     } = this.state;
-    if (isFetching) return <div>...Loading</div>;
+
     return (
       <div className="film-card">
         <img src={Poster} alt="poster" />
@@ -122,7 +92,3 @@ export default class FilmCard extends React.Component {
     );
   }
 }
-
-FilmCard.defaultProps = {
-  name: `alien`
-};
