@@ -1,10 +1,8 @@
 import getOmdbApi from '../constants/omdbApi';
 
-const getTitle = name => {
-  const { Title } = this.state;
-  fetch(getOmdbApi(name))
-    .then(response => response.json())
-    .then(result => this.setState({ Title: result.Title, isFetching: false }));
+const getData = name => {
+  const api = getOmdbApi(name)
+  fetch(api)
 };
 
 const getPoster = name => {
