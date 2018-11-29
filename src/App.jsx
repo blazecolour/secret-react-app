@@ -39,7 +39,7 @@ class App extends Component {
   render() {
     const { films, isFetching } = this.state;
 
-    if (isFetching) return setTimeout(() => <Loading />, 5000);
+    if (isFetching) return <Loading width='200px' height='200px' />;
 
     return (
       <div className="App">
