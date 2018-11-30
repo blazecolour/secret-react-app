@@ -11,11 +11,12 @@ class App extends Component {
 
     this.state = {
       films: [],
+      review: [],
       isFetching: true,
       error: null
     };
 
-    this.NytimesApi = getNytimesApi(120);
+    this.NytimesApi = getNytimesApi(20);
   }
   getFilmTitles = () => {
     fetch(this.NytimesApi)
@@ -23,11 +24,13 @@ class App extends Component {
 
       .then(response => {
         const filmNames = [];
+        const review = [];
 
         response.results.forEach(element => {
           filmNames.push(element.display_title);
+          review.push(element.summary_short);
         });
-        this.setState({ films: filmNames, isFetching: false });
+        this.setState({ films: filmNames, review: review, isFetching: false });
       });
   };
 
@@ -36,16 +39,17 @@ class App extends Component {
   }
 
   render() {
-    const { films, isFetching } = this.state;
+    const { films, review, isFetching } = this.state;
 
-    if (isFetching) return <Loading width='10px' height='10px' />;
+    if (isFetching) return <Loading width="100px" height="100px" />;
 
     return (
       <div className="App">
         <ul>
-          {films.map(film => (
+        
+          {films.map((film, id) => (
             <li key={uniqId()}>
-              <FilmCard Title={film} />
+              <FilmCard Title={film} review={review[id]} />
             </li>
           ))}
         </ul>

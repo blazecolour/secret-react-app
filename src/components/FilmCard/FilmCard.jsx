@@ -49,7 +49,7 @@ export default class FilmCard extends React.Component {
   getRatings = () => {
     fetch(this.api)
       .then(response => response.json())
-      .then(result => this.setState({ Ratings: result.Ratings[0].Value }));
+      .then(result => this.setState({ Ratings: result.imdbRating }));
   };
 
   getDescription = () => {
@@ -63,21 +63,14 @@ export default class FilmCard extends React.Component {
     this.getDirector();
     this.getActors();
     this.getYear();
-    // this.getRatings();
+    this.getRatings();
     this.getDescription();
   }
 
   render() {
-    const { Title } = this.props;
+    const { Title, review} = this.props;
 
-    const {
-      Poster,
-      Director,
-      Actors,
-      Year,
-      Description
-      // Ratings,
-    } = this.state;
+    const { Poster, Director, Actors, Year, Description, Ratings } = this.state;
 
     return (
       <div className="film-card">
@@ -86,15 +79,15 @@ export default class FilmCard extends React.Component {
           <h2>{Title}</h2>
           <p>Director: {Director}</p>
           <p>
-            Actors:{' '}
+            Actors:
             {Actors.map(actor => (
               <div key={uniqId()}>{actor}</div>
             ))}
           </p>
           <p>Year: {Year}</p>
-          {/* <p>Rating: {Ratings}</p> */}
+          <p>Rating: {Ratings}</p>
           <p className="description-film">Description: {Description}</p>
-          <p>Review: </p>
+          <p>Review: {review}</p>
         </div>
       </div>
     );
