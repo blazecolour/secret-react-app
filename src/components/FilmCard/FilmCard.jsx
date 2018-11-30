@@ -1,6 +1,8 @@
 import React from 'react';
 import getOmdbApi from '../../constants/omdbApi';
 import uniqId from '../../utils/uniqId';
+import { normalizeRating, getRatingStar } from '../../utils/getRatingStar';
+import getPoster from '../../utils/placeholderImg';
 import './FilmCard.css';
 
 export default class FilmCard extends React.Component {
@@ -68,26 +70,27 @@ export default class FilmCard extends React.Component {
   }
 
   render() {
-    const { Title, review} = this.props;
+    const { Title, review } = this.props;
 
     const { Poster, Director, Actors, Year, Description, Ratings } = this.state;
-
+    const ratingStars = getRatingStar(normalizeRating(Ratings));
+    const poster = getPoster(Poster);
     return (
       <div className="film-card">
-        <img src={Poster} alt="poster" />
+        <img src={poster} alt="poster" />
         <div className="info-card">
           <h2>{Title}</h2>
           <p>Director: {Director}</p>
-          <p>
+          <div>
             Actors:
             {Actors.map(actor => (
               <div key={uniqId()}>{actor}</div>
             ))}
-          </p>
+          </div>
           <p>Year: {Year}</p>
-          <p>Rating: {Ratings}</p>
+          <p>Rating: {ratingStars}</p>
           <p className="description-film">Description: {Description}</p>
-          <p>Review: {review}</p>
+          <p className="description-film">Review: {review}</p>
         </div>
       </div>
     );
