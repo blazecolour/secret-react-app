@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FilmCard from './components/FilmCard/FilmCard';
+// import FilmCell from './components/FilmCell/FilmCell';
 import Loading from './components/Loading/Loading';
 import getNytimesApi from './constants/nytimesApi';
 import uniqId from './utils/uniqId';
@@ -18,6 +19,7 @@ class App extends Component {
 
     this.NytimesApi = getNytimesApi(20);
   }
+
   getFilmTitles = () => {
     fetch(this.NytimesApi)
       .then(response => response.json())
@@ -30,7 +32,11 @@ class App extends Component {
           filmNames.push(element.display_title);
           review.push(element.summary_short);
         });
-        this.setState({ films: filmNames, review: review, isFetching: false });
+        this.setState({
+          films: filmNames,
+          review: review,
+          isFetching: false
+        });
       });
   };
 
@@ -45,14 +51,11 @@ class App extends Component {
 
     return (
       <div className="App">
-        <ul>
-        
-          {films.map((film, id) => (
-            <li key={uniqId()}>
-              <FilmCard Title={film} review={review[id]} />
-            </li>
-          ))}
-        </ul>
+        {films.map((film, id) => (
+          <div key={uniqId()}>
+            <FilmCard title={film} review={review[id]} />
+          </div>
+        ))}
       </div>
     );
   }

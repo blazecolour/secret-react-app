@@ -1,5 +1,5 @@
 .film-card {
-  width: 800px;
+  width: 400px;
   height: auto;
   display: flex;
   box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.2);
@@ -9,12 +9,15 @@
 
 .info-card {
   border-width: 1px;
-  border-color: green;
   padding: 12px 12px 24px 24px;
-  border-radius: 3px;
   text-align: center;
 }
 
 .description-film {
   text-align: left;
+}
+
+.img-card {
+  width: 150px;
+  height: 222px;
 }
