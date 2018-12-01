@@ -12,7 +12,7 @@ export default class FilmCell extends React.Component {
     this.state = {
       poster: '',
       director: '',
-      actors: [],
+      actors: '',
       year: '',
       rating: '',
       error: null
@@ -28,7 +28,7 @@ export default class FilmCell extends React.Component {
         this.setState({
           poster: data.Poster,
           director: data.Director,
-          actors: data.Actors.split(',').slice(0, 3),
+          actors: data.Actors,
           year: data.Year,
           rating: data.imdbRating,
         })
@@ -45,6 +45,11 @@ export default class FilmCell extends React.Component {
     const { poster, director, actors, year, rating } = this.state;
     const ratingStars = getRatingStar(rating);
     const posterFilm = getPoster(poster);
+    function renderActors() {
+     if (!actors || actors === 'N/A') return ' no actors';
+     return actors.split(',').slice(0, 3).map(actor => (
+      <div key={uniqId()}>{actor}</div>
+    ))}
     return (
       <div className="film-card">
         <img src={posterFilm} alt="poster" width="150" height="222" />
@@ -53,9 +58,7 @@ export default class FilmCell extends React.Component {
           <p>Director: {director}</p>
           <div>
             Actors:
-            {actors.map(actor => (
-              <div key={uniqId()}>{actor}</div>
-            ))}
+             {renderActors()}
           </div>
           <p>Year: {year}</p>
           <p>Rating: {ratingStars}</p>
