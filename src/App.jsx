@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import FilmCard from './components/FilmCard/FilmCard';
+// import FilmCard from './components/FilmCard/FilmCard';
 // import FilmCell from './components/FilmCell/FilmCell';
+import FilmItem from './components/FilmItem/FilmItem';
 import Loading from './components/Loading/Loading';
-import getNytimesApi from './constants/nytimesApi';
+import { getNytimesApi } from './utils/fetchApi';
 import uniqId from './utils/uniqId';
 import './App.css';
 
@@ -11,30 +12,25 @@ class App extends Component {
     super(props);
 
     this.state = {
-      films: [],
-      review: [],
+      titles: [],
+      reviews: [],
       isFetching: true,
       error: null
     };
 
-    this.NytimesApi = getNytimesApi(20);
+    this.api = getNytimesApi(20);
   }
 
   getFilmTitles = () => {
-    fetch(this.NytimesApi)
+    fetch(this.api)
       .then(response => response.json())
+      .then(data => {
+        const filmNames = data.results.map(({ display_title }) => display_title);
+        const filmReviews = data.results.map(({ summary_short }) => summary_short);
 
-      .then(response => {
-        const filmNames = [];
-        const review = [];
-
-        response.results.forEach(element => {
-          filmNames.push(element.display_title);
-          review.push(element.summary_short);
-        });
         this.setState({
-          films: filmNames,
-          review: review,
+          titles: filmNames,
+          reviews: filmReviews,
           isFetching: false
         });
       });
@@ -45,15 +41,17 @@ class App extends Component {
   }
 
   render() {
-    const { films, review, isFetching } = this.state;
+    const { titles, isFetching } = this.state;
 
     if (isFetching) return <Loading width="100px" height="100px" />;
 
     return (
       <div className="App">
-        {films.map((film, id) => (
+        {titles.map((title, id) => (
           <div key={uniqId()}>
-            <FilmCard title={film} review={review[id]} />
+            {/* <FilmCard title={title} review={reviews[id]} /> */}
+            {/* <FilmCell title={title} /> */}
+            <FilmItem title={title} />
           </div>
         ))}
       </div>

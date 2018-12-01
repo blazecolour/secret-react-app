@@ -1,4 +1,6 @@
-export const normalizeRating = rating => Math.ceil(Number(rating) / 2);
+const normalizeRating = rating => Math.ceil(Number(rating) / 2);
 
-export const getRatingStar = rating =>
-  isNaN(rating) ? 'no rating' : Array(rating).fill('*');
+export default rating => {
+  const result = normalizeRating(rating);
+  return isNaN(result) ? 'no rating' : Array(result).fill('*');
+};

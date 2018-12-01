@@ -3,9 +3,9 @@ import { getOmdbApi } from '../../utils/fetchApi';
 import uniqId from '../../utils/uniqId';
 import getRatingStar from '../../utils/getRatingStar';
 import getPoster from '../../utils/placeholderImg';
-import './FilmCell.css';
+import './FilmItem.css';
 
-export default class FilmCell extends React.Component {
+export default class FilmItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -30,7 +30,7 @@ export default class FilmCell extends React.Component {
           director: data.Director,
           actors: data.Actors.split(',').slice(0, 3),
           year: data.Year,
-          rating: data.imdbRating,
+          rating: data.imdbRating
         })
       );
   };
@@ -47,19 +47,17 @@ export default class FilmCell extends React.Component {
     const posterFilm = getPoster(poster);
     return (
       <div className="film-card">
-        <img src={posterFilm} alt="poster" width="150" height="222" />
-        <div className="info-card">
-          <h2>{title}</h2>
-          <p>Director: {director}</p>
-          <div>
-            Actors:
-            {actors.map(actor => (
-              <div key={uniqId()}>{actor}</div>
-            ))}
-          </div>
-          <p>Year: {year}</p>
-          <p>Rating: {ratingStars}</p>
+        <img src={posterFilm} alt="poster" width="75" height="111" />
+        <h2>{title}</h2>
+        <p>Director: {director}</p>
+        <div className="actor-list">
+          Actors:
+          {actors.map(actor => (
+            <div key={uniqId()}>{actor}</div>
+          ))}
         </div>
+        <p>Year: {year}</p>
+        <p>Rating: {ratingStars}</p>
       </div>
     );
   }

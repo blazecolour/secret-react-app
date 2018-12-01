@@ -1,7 +1,7 @@
 import React from 'react';
-import getOmdbApi from '../../constants/omdbApi';
+import { getOmdbApi } from '../../utils/fetchApi';
 import uniqId from '../../utils/uniqId';
-import { normalizeRating, getRatingStar } from '../../utils/getRatingStar';
+import getRatingStar from '../../utils/getRatingStar';
 import getPoster from '../../utils/placeholderImg';
 import './FilmCard.css';
 
@@ -44,8 +44,8 @@ export default class FilmCard extends React.Component {
   render() {
     const { title, review } = this.props;
 
-    const { poster, director, actors, year, description, rating } = this.state;
-    const ratingStars = getRatingStar(normalizeRating(rating));
+    const { poster, director, actors, year, rating, description } = this.state;
+    const ratingStars = getRatingStar(rating);
     const posterFilm = getPoster(poster);
     return (
       <div className="film-card">
