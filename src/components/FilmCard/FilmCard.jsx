@@ -29,7 +29,7 @@ export default class FilmCard extends React.Component {
         this.setState({
           poster: data.Poster,
           director: data.Director,
-          actors: data.Actors.split(',').slice(0, 3),
+          actors: data.Actors,
           year: data.Year,
           rating: data.imdbRating,
           description: data.Plot
