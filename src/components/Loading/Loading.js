@@ -1,10 +1,8 @@
 import React from 'react';
 import './Loading.css';
 
-const Loading = props => {
-  const { width, height } = props;
-
-  return <div className="Loading" style={{ width, height }}></div>;
+const Loading = () => {
+  return <div className="Loading"></div>;
 };
 
 export default Loading;

@@ -43,7 +43,7 @@ class App extends Component {
   render() {
     const { titles, isFetching } = this.state;
 
-    if (isFetching) return <Loading width="100px" height="100px" />;
+    if (isFetching) return <Loading/>;
 
     return (
       <div className="App">
