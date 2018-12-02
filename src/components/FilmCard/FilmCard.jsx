@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { getOmdbApi } from '../../utils/fetchApi';
 import uniqId from '../../utils/uniqId';
 import getRatingStar from '../../utils/getRatingStar';
 import getPoster from '../../utils/placeholderImg';
+import normalize from '../../utils/normalize';
 import './FilmCard.css';
 
 export default class FilmCard extends React.Component {
@@ -22,20 +24,32 @@ export default class FilmCard extends React.Component {
     this.api = getOmdbApi(this.props.title);
   }
 
-  getData = () => {
+  getData() {
     fetch(this.api)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Something went wrong ...');
+        }
+      })
       .then(data => {
+        const poster = getPoster(data.Poster);
+        const director = normalize(data.Director);
+        const year = normalize(data.Year);
+        const rating = getRatingStar(data.imdbRating);
+        const description = normalize(data.Plot);
         this.setState({
-          poster: data.Poster,
-          director: data.Director,
+          poster: poster,
+          director: director,
           actors: data.Actors,
-          year: data.Year,
-          rating: data.imdbRating,
-          description: data.Plot
+          year: year,
+          rating: rating,
+          description: description
         });
-      });
-  };
+      })
+      .catch(error => this.setState({ error }));
+  }
 
   componentDidMount() {
     this.getData();
@@ -43,29 +57,30 @@ export default class FilmCard extends React.Component {
 
   render() {
     const { title, review } = this.props;
+    const { poster, director, actors, year, rating, description, error } = this.state;
 
-    const { poster, director, actors, year, rating, description } = this.state;
-    const ratingStars = getRatingStar(rating);
-    const posterFilm = getPoster(poster);
+    if (error) {
+      return <p>{error.message}</p>;
+    }
+
     function renderActors() {
-      if (!actors || actors === 'N/A') return ' no actors';
-      return actors.split(',').slice(0, 3).map(actor => (
-       <div key={uniqId()}>{actor}</div>
-     ))}
+      if (!actors || actors === 'N/A') return ' no information';
+      return actors
+        .split(',')
+        .slice(0, 3)
+        .map(actor => <div key={uniqId()}>{actor}</div>);
+    }
     return (
       <div className="film-card">
         <div>
-          <img src={posterFilm} alt="poster" />
+          <img src={poster} alt="poster" />
         </div>
         <div className="info-card">
           <h2>{title}</h2>
           <p>Director: {director}</p>
-          <div>
-            Actors:
-            {renderActors()}
-          </div>
+          <div>Actors: {renderActors()}</div>
           <p>Year: {year}</p>
-          <p>Rating: {ratingStars}</p>
+          <p>Rating: {rating}</p>
           <p className="description-film">Description: {description}</p>
           <p className="description-film">Review: {review}</p>
         </div>
@@ -73,3 +88,8 @@ export default class FilmCard extends React.Component {
     );
   }
 }
+
+FilmCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  review: PropTypes.string
+};

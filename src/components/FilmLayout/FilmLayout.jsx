@@ -3,7 +3,7 @@ import FilmList from '../FilmList/FilmList';
 import uniqId from '../../utils/uniqId';
 import './FilmLayout.css';
 
-class FilmLayout extends Component {
+export default class FilmLayout extends Component {
   constructor(props) {
     super(props);
 
@@ -27,10 +27,10 @@ class FilmLayout extends Component {
         {films.map(list => (
           <div key={uniqId()}>{list}</div>
         ))}
-        <button className="btn" onClick={this.onChangeFilms}>more</button>
+        <button className="btn" onClick={this.onChangeFilms}>
+          more
+        </button>
       </div>
     );
   }
 }
-
-export default FilmLayout;
